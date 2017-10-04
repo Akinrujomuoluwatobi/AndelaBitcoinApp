@@ -9,8 +9,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class ExchangeActivity extends AppCompatActivity {
+import Contract.ExchangeContract;
+import Presenter.ExchangePresenter;
 
+public class ExchangeActivity extends AppCompatActivity implements ExchangeContract.View {
+
+    ExchangePresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +22,7 @@ public class ExchangeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        presenter = new ExchangePresenter(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,5 +53,10 @@ public class ExchangeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setPresenter(ExchangePresenter exchangePresenter) {
+        presenter = exchangePresenter;
     }
 }
