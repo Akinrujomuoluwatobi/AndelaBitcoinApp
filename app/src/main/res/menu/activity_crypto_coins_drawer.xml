@@ -4,11 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_btc"
-            android:icon="@mipmap/ic_btc"
+            android:icon="@drawable/btcimage2"
             android:title="Bitcoin (BTC)" />
         <item
             android:id="@+id/nav_eth"
-            android:icon="@mipmap/ic_eth"
+            android:icon="@drawable/ethimg"
             android:title="Ethereum Coin (ETH)" />
 
     </group>

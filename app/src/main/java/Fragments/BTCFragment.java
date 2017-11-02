@@ -5,32 +5,31 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.progtobi.andelabitcoinapp.R;
 
 import java.util.List;
 
 import Adapters.ViewCoinsAdapter;
-import Contract.ExchangeContract;
-import Model.ExchangeModel;
-import Presenter.ExchangePresenter;
+import Contract.BtcContract;
+import Model.ViewModel;
+import Presenter.BtcPresenter;
 import Util.EventManagerApp;
 
 /**
  * Created by PROG. TOBI on 06-Oct-17.
  */
 
-public class BTCFragment extends Fragment implements ExchangeContract.View {
+public class BTCFragment extends Fragment implements BtcContract.View {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -38,11 +37,11 @@ public class BTCFragment extends Fragment implements ExchangeContract.View {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    ExchangePresenter presenter;
+    BtcPresenter presenter;
     private RecyclerView exchangeRecycler;
-    List<ExchangeModel> mEventList;
     SwipeRefreshLayout refreshLayout;
     private ViewCoinsAdapter viewCoinAdapter;
+    int mNoOfColumns;
 
     public BTCFragment.OnFragmentInteractionListener mListener;
 
@@ -67,10 +66,11 @@ public class BTCFragment extends Fragment implements ExchangeContract.View {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mNoOfColumns = calculateNoOfColumns(getActivity());
         refreshLayout = rootView.findViewById(R.id.btcswiperefresh);
-        presenter = new ExchangePresenter(this);
+        presenter = new BtcPresenter(this);
         exchangeRecycler = rootView.findViewById(R.id.exchangerecycler);
-        exchangeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        exchangeRecycler.setLayoutManager(new GridLayoutManager(getActivity(), mNoOfColumns));
 
         bindRecycler(rootView);
         return rootView;
@@ -79,11 +79,11 @@ public class BTCFragment extends Fragment implements ExchangeContract.View {
 
     public void bindRecycler(View rootView) {
         exchangeRecycler = rootView.findViewById(R.id.exchangerecycler);
-        exchangeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        exchangeRecycler.setLayoutManager(new GridLayoutManager(getActivity(), mNoOfColumns));
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.fetchExchange();
+                presenter.fetchExchange("btc");
             }
         });
     }
@@ -114,14 +114,14 @@ public class BTCFragment extends Fragment implements ExchangeContract.View {
     }
 
     @Override
-    public void setPresenter(ExchangePresenter exchangePresenter) {
-        presenter = exchangePresenter;
+    public void setPresenter(BtcPresenter btcPresenter) {
+        presenter = btcPresenter;
     }
 
     @Override
     public void checkInternet() {
         if (EventManagerApp.getInstance().isOnline(getActivity())) {
-            presenter.fetchExchange();
+            presenter.fetchExchange("btc");
         } else {
             showMessage("Pls Check Internet Connection");
         }
@@ -138,14 +138,12 @@ public class BTCFragment extends Fragment implements ExchangeContract.View {
 
     @Override
     public void showLoading(boolean b) {
-        //ongoingeventpb.setVisibility(b ? View.VISIBLE : View.GONE);
         refreshLayout.setRefreshing(b);
     }
 
     @Override
-    public void setDevelopersAdapter(List<Double> mExchanges, List<String> countries) {
-
-        viewCoinAdapter = new ViewCoinsAdapter(mExchanges, countries, getActivity());
+    public void setDevelopersAdapter(List<ViewModel> countrie) {
+        viewCoinAdapter = new ViewCoinsAdapter(countrie, getActivity(), "btc");
         DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
         defaultItemAnimator.setAddDuration(1000);
         defaultItemAnimator.setMoveDuration(1000);
@@ -154,12 +152,14 @@ public class BTCFragment extends Fragment implements ExchangeContract.View {
         exchangeRecycler.setAdapter(viewCoinAdapter);
     }
 
-    @Override
-    public void addResquest(JsonObjectRequest stringRequest) {
-
-    }
-
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 110);
+        return noOfColumns;
     }
 }

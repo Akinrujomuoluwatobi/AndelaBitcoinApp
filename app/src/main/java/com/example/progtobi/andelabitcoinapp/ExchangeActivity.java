@@ -8,25 +8,23 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
-
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import java.util.List;
 
 import Adapters.ViewCoinsAdapter;
-import Contract.ExchangeContract;
+import Contract.BtcContract;
 import Model.ExchangeModel;
-import Presenter.ExchangePresenter;
+import Model.ViewModel;
+import Presenter.BtcPresenter;
 import Util.EventManagerApp;
-import Util.Mysingleton;
 
-public class ExchangeActivity extends AppCompatActivity implements ExchangeContract.View {
+public class ExchangeActivity extends AppCompatActivity implements BtcContract.View {
 
-    ExchangePresenter presenter;
+    BtcPresenter presenter;
     private RecyclerView exchangeRecycler;
     List<ExchangeModel> mEventList;
     private ViewCoinsAdapter viewCoinAdapter;
@@ -38,7 +36,7 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeContr
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        presenter = new ExchangePresenter(this);
+        presenter = new BtcPresenter(this);
         exchangeRecycler = (RecyclerView) findViewById(R.id.exchangerecycler);
         exchangeRecycler.setLayoutManager(new LinearLayoutManager(ExchangeActivity.this));
 
@@ -75,14 +73,14 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeContr
     }
 
     @Override
-    public void setPresenter(ExchangePresenter exchangePresenter) {
-        presenter = exchangePresenter;
+    public void setPresenter(BtcPresenter btcPresenter) {
+        presenter = btcPresenter;
     }
 
     @Override
     public void checkInternet() {
         if (EventManagerApp.getInstance().isOnline(this)) {
-            presenter.fetchExchange();
+            presenter.fetchExchange("btc");
         } else {
             showMessage("Pls Check Internet Connection");
         }
@@ -99,9 +97,8 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeContr
     }
 
     @Override
-    public void setDevelopersAdapter(List<Double> mExchanges, List<String> countries) {
-
-        viewCoinAdapter = new ViewCoinsAdapter(mExchanges, countries, ExchangeActivity.this);
+    public void setDevelopersAdapter(List<ViewModel> countrie) {
+        viewCoinAdapter = new ViewCoinsAdapter(countrie, ExchangeActivity.this, "eth");
         DefaultItemAnimator defaultItemAnimator = new DefaultItemAnimator();
         defaultItemAnimator.setAddDuration(1000);
         defaultItemAnimator.setMoveDuration(1000);
@@ -110,9 +107,4 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeContr
         exchangeRecycler.setAdapter(viewCoinAdapter);
     }
 
-
-    @Override
-    public void addResquest(JsonObjectRequest stringRequest) {
-        Mysingleton.getInstance(ExchangeActivity.this).addtorequestque(stringRequest);
-    }
 }

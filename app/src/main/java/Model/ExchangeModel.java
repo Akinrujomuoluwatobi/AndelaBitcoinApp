@@ -3,10 +3,6 @@ package Model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by PROG. TOBI on 04-Oct-17.
  */
@@ -22,6 +18,9 @@ public class ExchangeModel {
 
     @SerializedName("NGN")
     private float NGN;
+
+    private float AUD, INR, COP, EGP, ZAR, GBP, PHP, PLN, JPY, CAD,
+            BRL, GHC, HKD, PKR, THB, UGX, UAH;
 
     public float getUSD() {
         return USD;
@@ -47,32 +46,72 @@ public class ExchangeModel {
         this.NGN = NGN;
     }
 
-    /*@SerializedName("BTC")
-    private List<Values> BTC;
+    public float getAUD() {
+        return AUD;
+    }
 
+    public float getINR() {
+        return INR;
+    }
 
-    public class Values {
+    public float getCOP() {
+        return COP;
+    }
 
-        @SerializedName("USD")
-        private float USD;
+    public float getEGP() {
+        return EGP;
+    }
 
-        @SerializedName("EUR")
-        private float EUR;
+    public float getZAR() {
+        return ZAR;
+    }
 
-        @SerializedName("NGN")
-        private float NGN;
+    public float getGBP() {
+        return GBP;
+    }
 
-        public float getUSD() {
-            return USD;
-        }
+    public float getPHP() {
+        return PHP;
+    }
 
-        public float getEUR() {
-            return EUR;
-        }
+    public float getPLN() {
+        return PLN;
+    }
 
-        public float getNGN() {
-            return NGN;
-        }
-    }*/
+    public float getJPY() {
+        return JPY;
+    }
+
+    public float getCAD() {
+        return CAD;
+    }
+
+    public float getBRL() {
+        return BRL;
+    }
+
+    public float getGHC() {
+        return GHC;
+    }
+
+    public float getHKD() {
+        return HKD;
+    }
+
+    public float getPKR() {
+        return PKR;
+    }
+
+    public float getTHB() {
+        return THB;
+    }
+
+    public float getUGX() {
+        return UGX;
+    }
+
+    public float getUAH() {
+        return UAH;
+    }
 
 }

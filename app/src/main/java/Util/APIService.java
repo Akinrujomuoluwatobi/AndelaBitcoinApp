@@ -1,8 +1,5 @@
 package Util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Model.ExchangeModel;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -12,12 +9,13 @@ import retrofit2.http.GET;
  */
 
 public interface APIService {
-    /*@FormUrlEncoded
-    @POST("")
-    Call<> userLogin(@Field("uname") String uname,
-                     @Field("pk") String upass);*/
 
-    @GET("price?fsym=BTC&tsyms=USD,EUR,NGN&extraParams=AndelaBitcoinApp")
-    Call<ExchangeModel> getData();
+    @GET("price?fsym=BTC&tsyms=USD,EUR,NGN,AUD,INR,COP,EGP,ZAR,GBP,PHP,PLN,JPY,CAD,BRL,GHC,HKD,PKR,THB,UGX,UAH" +
+            "&extraParams=AndelaBitcoinApp")
+    Call<ExchangeModel> getBtc();
+
+    @GET("price?fsym=ETH&tsyms=USD,EUR,NGN,AUD,INR,COP,EGP,ZAR,GBP,PHP,PLN,JPY,CAD,BRL,GHC,HKD,PKR,THB,UGX,UAH" +
+            "&extraParams=AndelaBitcoinApp")
+    Call<ExchangeModel> getEth();
 
 }

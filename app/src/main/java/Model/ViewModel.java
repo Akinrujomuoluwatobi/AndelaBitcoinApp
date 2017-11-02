@@ -6,7 +6,7 @@ package Model;
 
 public class ViewModel {
     String cName;
-    String cValue;
+    Float cValue;
 
     public String getcName() {
         return cName;
@@ -16,11 +16,11 @@ public class ViewModel {
         this.cName = cName;
     }
 
-    public String getcValue() {
+    public Float getcValue() {
         return cValue;
     }
 
-    public void setcValue(String cValue) {
+    public void setcValue(Float cValue) {
         this.cValue = cValue;
     }
 }
